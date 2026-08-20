@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.rows
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -69,6 +70,7 @@ fun HomeScreen() {
         Spacer(modifier = Modifier.height(40.dp))
 
         ProductCard(
+            modifier = Modifier.padding(16.dp),
             onAddItem = {
                 count++
             }
@@ -96,13 +98,22 @@ fun CartCounter(count: Int, onAddItem: () -> Unit) {
 }
 
 @Composable
-fun ProductCard(onAddItem: () -> Unit) {
-    Column {
-        Text("Product Card")
-        Button(
-            onClick = onAddItem
-        ) {
-            Text("Add Item")
+fun ProductCard(modifier: Modifier = Modifier, onAddItem: () -> Unit) {
+    Card(
+        modifier = modifier
+    ) {
+        Column (
+            modifier = Modifier.padding(16.dp)
+        ){
+            Text("Samsung Galaxy Phone")
+            Spacer(modifier = Modifier.height(8.dp))
+            Text("₹25,000")
+            Spacer(modifier = Modifier.height(16.dp))
+            Button(
+                onClick = onAddItem
+            ) {
+                Text("Add Item")
+            }
         }
     }
 }
@@ -116,7 +127,7 @@ fun CartSummary(count: Int) {
 }
 
 @Composable
-fun RKMartHeader(count: Int){
+fun RKMartHeader(count: Int) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
