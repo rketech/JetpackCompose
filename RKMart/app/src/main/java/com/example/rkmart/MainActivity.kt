@@ -18,6 +18,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.rkmart.ui.theme.RKMartTheme
+import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,11 +28,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             RKMartTheme {
-                    HomeScreen()
-                }
+                HomeScreen()
             }
         }
     }
+}
 
 @Preview(showBackground = true)
 @Composable
@@ -38,24 +41,65 @@ fun HomeScreen() {
     var count by remember {
         mutableStateOf(0)
     }
-    CartCounter(
-        count = count,
-        // "CartCounter, here's an action you can invoke later."
-        // is simply a lambda being passed down to CartCounter.
-        onAddItem = {
-            count++
-        }
-    )
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        CartCounter(
+            count = count,
+            // "CartCounter, here's an action you can invoke later."
+            // is simply a lambda being passed down to CartCounter.
+            onAddItem = {
+                count++
+            }
+        )
+
+        Spacer(modifier = Modifier.height(40.dp))
+
+        ProductCard(
+            onAddItem = {
+                count++
+            }
+        )
+
+        Spacer(modifier = Modifier.height(40.dp))
+
+        CartSummary(
+            count = count,
+        )
+    }
 }
 
 @Composable
 fun CartCounter(count: Int, onAddItem: () -> Unit) {
     Column {
+        Text("Cart Counter")
         Text("Cart Item: $count")
         Button(
             onClick = onAddItem
         ) {
             Text("Add Item")
         }
+    }
+}
+
+@Composable
+fun ProductCard(onAddItem: () -> Unit) {
+    Column {
+        Text("Product Card")
+        Button(
+            onClick = onAddItem
+        ) {
+            Text("Add Item")
+        }
+    }
+}
+
+@Composable
+fun CartSummary(count: Int) {
+    Column {
+        Text("Cart Summary")
+        Text("Items in Cart: $count")
     }
 }
