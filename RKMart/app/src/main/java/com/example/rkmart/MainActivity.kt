@@ -52,9 +52,22 @@ fun HomeScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
+        verticalArrangement = Arrangement.SpaceEvenly,
+        Alignment.CenterHorizontally
     ) {
         RKMartHeader(count)
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+
+        ) {
+            Text("One")
+            Text("Two")
+            Text("Three")
+        }
 
         Spacer(modifier = Modifier.height(40.dp))
 
@@ -70,7 +83,9 @@ fun HomeScreen() {
         Spacer(modifier = Modifier.height(40.dp))
 
         ProductCard(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier
+                .padding(top = 16.dp, bottom = 16.dp)
+                .fillMaxWidth(),
             onAddItem = {
                 count++
             }
@@ -102,9 +117,9 @@ fun ProductCard(modifier: Modifier = Modifier, onAddItem: () -> Unit) {
     Card(
         modifier = modifier
     ) {
-        Column (
+        Column(
             modifier = Modifier.padding(16.dp)
-        ){
+        ) {
             Text("Samsung Galaxy Phone")
             Spacer(modifier = Modifier.height(8.dp))
             Text("₹25,000")
