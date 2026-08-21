@@ -1,6 +1,7 @@
 package com.example.rkmart
 
 import android.os.Bundle
+import android.widget.Space
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -28,6 +29,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.ui.Alignment
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.ui.graphics.Color
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +45,11 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+data class Product(
+    val name: String,
+    val price: Int
+)
+
 @Preview(showBackground = true)
 @Composable
 fun HomeScreen() {
@@ -49,6 +58,12 @@ fun HomeScreen() {
     var count by remember {
         mutableStateOf(0)
     }
+
+    val product = Product(
+        name = "Samsung Galaxy Ultra",
+        price = 45000
+    )
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -83,6 +98,7 @@ fun HomeScreen() {
         Spacer(modifier = Modifier.height(40.dp))
 
         ProductCard(
+            product = product,
             modifier = Modifier
                 .padding(top = 16.dp, bottom = 16.dp)
                 .fillMaxWidth(),
@@ -113,17 +129,37 @@ fun CartCounter(count: Int, onAddItem: () -> Unit) {
 }
 
 @Composable
-fun ProductCard(modifier: Modifier = Modifier, onAddItem: () -> Unit) {
+fun ProductCard(
+    product: Product,
+    modifier: Modifier = Modifier,
+    onAddItem: () -> Unit
+) {
     Card(
         modifier = modifier
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            Text("Samsung Galaxy Phone")
-            Spacer(modifier = Modifier.height(8.dp))
-            Text("₹25,000")
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(180.dp)
+                    .background(Color.LightGray),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("Product Image")
+            }
+
             Spacer(modifier = Modifier.height(16.dp))
+
+            Text(product.name)
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text("₹${product.price}")
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             Button(
                 onClick = onAddItem
             ) {
