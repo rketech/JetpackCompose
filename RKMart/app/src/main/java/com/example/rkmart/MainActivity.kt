@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
@@ -61,95 +63,85 @@ fun HomeScreen() {
         mutableStateOf(0)
     }
 
-    val product = Product(
-        name = "Samsung Galaxy Ultra",
-        price = 45000
+    // Temporary Database
+    val products = listOf(
+        Product(
+            name = "Samsung Galaxy Ultra",
+            price = 45000
+        ),
+
+        Product(
+            name = "One Plus N6",
+            price = 24999
+        ),
+
+        Product(
+            name = "Lava Bold N2",
+            price = 9699
+        )
     )
 
-    val product2 = Product(
-        name = "One Plus N6",
-        price = 24999
-    )
-
-    val product3 = Product(
-        name = "Lava Bold N2",
-        price = 9699
-    )
-
-    val scrollState = rememberScrollState()
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-            .verticalScroll(scrollState),
-        verticalArrangement = Arrangement.SpaceEvenly,
-        Alignment.CenterHorizontally
     ) {
-        RKMartHeader(count)
+        item {
+            RKMartHeader(count)
+        }
+        item {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-
-        ) {
-            Text("One")
-            Text("Two")
-            Text("Three")
+            ) {
+                Text("One")
+                Text("Two")
+                Text("Three")
+            }
         }
 
-        Spacer(modifier = Modifier.height(40.dp))
+        item {
+            Spacer(modifier = Modifier.height(40.dp))
+        }
 
-        CartCounter(
-            count = count,
-            // "CartCounter, here's an action you can invoke later."
-            // is simply a lambda being passed down to CartCounter.
-            onAddItem = {
-                count++
-            }
-        )
+        item {
+            CartCounter(
+                count = count,
+                // "CartCounter, here's an action you can invoke later."
+                // is simply a lambda being passed down to CartCounter.
+                onAddItem = {
+                    count++
+                }
+            )
+        }
 
-        Spacer(modifier = Modifier.height(40.dp))
+        item {
+            Spacer(modifier = Modifier.height(40.dp))
+        }
 
-        ProductCard(
-            product = product,
-            modifier = Modifier
-                .padding(top = 16.dp, bottom = 16.dp)
-                .fillMaxWidth(),
-            onAddItem = {
-                count++
-            }
-        )
+        items(products) {product->
+            ProductCard(
+                product = product,
+                modifier = Modifier
+                    .padding(top = 16.dp, bottom = 16.dp)
+                    .fillMaxWidth(),
+                onAddItem = {
+                    count++
+                }
+            )
+        }
 
-        Spacer(modifier = Modifier.height(40.dp))
+        item {
+            Spacer(modifier = Modifier.height(40.dp))
+        }
 
-        ProductCard(
-            product = product2,
-            modifier = Modifier
-                .padding(top = 16.dp, bottom = 16.dp)
-                .fillMaxWidth(),
-            onAddItem = {
-                count++
-            }
-        )
-
-        Spacer(modifier = Modifier.height(40.dp))
-
-        ProductCard(
-            product = product3,
-            modifier = Modifier
-                .padding(top = 16.dp, bottom = 16.dp)
-                .fillMaxWidth(),
-            onAddItem = {
-                count++
-            }
-        )
-
-        Spacer(modifier = Modifier.height(40.dp))
-
-        CartSummary(
-            count = count,
-        )
+        item {
+            CartSummary(
+                count = count,
+            )
+        }
     }
 }
 
