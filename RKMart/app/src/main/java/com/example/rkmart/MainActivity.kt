@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.rows
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
@@ -64,10 +66,22 @@ fun HomeScreen() {
         price = 45000
     )
 
+    val product2 = Product(
+        name = "One Plus N6",
+        price = 24999
+    )
+
+    val product3 = Product(
+        name = "Lava Bold N2",
+        price = 9699
+    )
+
+    val scrollState = rememberScrollState()
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(16.dp)
+            .verticalScroll(scrollState),
         verticalArrangement = Arrangement.SpaceEvenly,
         Alignment.CenterHorizontally
     ) {
@@ -99,6 +113,30 @@ fun HomeScreen() {
 
         ProductCard(
             product = product,
+            modifier = Modifier
+                .padding(top = 16.dp, bottom = 16.dp)
+                .fillMaxWidth(),
+            onAddItem = {
+                count++
+            }
+        )
+
+        Spacer(modifier = Modifier.height(40.dp))
+
+        ProductCard(
+            product = product2,
+            modifier = Modifier
+                .padding(top = 16.dp, bottom = 16.dp)
+                .fillMaxWidth(),
+            onAddItem = {
+                count++
+            }
+        )
+
+        Spacer(modifier = Modifier.height(40.dp))
+
+        ProductCard(
+            product = product3,
             modifier = Modifier
                 .padding(top = 16.dp, bottom = 16.dp)
                 .fillMaxWidth(),
