@@ -54,13 +54,18 @@ data class Product(
     val price: Int
 )
 
+data class CartItem(
+    val product: Product,
+    val quantity: Int
+)
+
 @Preview(showBackground = true)
 @Composable
 fun HomeScreen() {
-    // remember is remembering the state object containing count.
+    // remember is remembering the state object containing count/cartItems.
     // state hoisting -- One state. Multiple UI components.
-    var count by remember {
-        mutableStateOf(0)
+    var cartItems by remember {
+        mutableStateOf(listOf<CartItem>())
     }
 
     // Temporary Database
@@ -78,6 +83,16 @@ fun HomeScreen() {
         Product(
             name = "Lava Bold N2",
             price = 9699
+        ),
+
+        Product(
+            name = "GALAXY m07",
+            price = 11999
+        ),
+
+        Product(
+            name = "Redmi Turbo 5",
+            price = 41999
         )
     )
 
@@ -87,7 +102,7 @@ fun HomeScreen() {
             .padding(16.dp)
     ) {
         item {
-            RKMartHeader(count)
+            RKMartHeader(cartItems.size)
         }
         item {
             Row(
@@ -108,12 +123,7 @@ fun HomeScreen() {
 
         item {
             CartCounter(
-                count = count,
-                // "CartCounter, here's an action you can invoke later."
-                // is simply a lambda being passed down to CartCounter.
-                onAddItem = {
-                    count++
-                }
+                count = cartItems.size
             )
         }
 
@@ -121,14 +131,33 @@ fun HomeScreen() {
             Spacer(modifier = Modifier.height(40.dp))
         }
 
-        items(products) {product->
+        items(products) { product ->
             ProductCard(
                 product = product,
                 modifier = Modifier
                     .padding(top = 16.dp, bottom = 16.dp)
                     .fillMaxWidth(),
                 onAddItem = {
-                    count++
+                    val existingItem = cartItems.find { it.product == product }
+
+                    if (existingItem != null) {
+                        // Product already exist in the cart
+                        cartItems = cartItems.map { item ->
+                            if (item.product == product) {
+                                item.copy(
+                                    quantity = item.quantity + 1
+                                )
+                            } else {
+                                item
+                            }
+                        }
+                    } else {
+                        // Product does not exist in the cart
+                        cartItems = cartItems + CartItem(
+                            product = product,
+                            quantity = 1
+                        )
+                    }
                 }
             )
         }
@@ -139,22 +168,29 @@ fun HomeScreen() {
 
         item {
             CartSummary(
-                count = count,
+                count = cartItems.size,
             )
         }
     }
 }
 
 @Composable
-fun CartCounter(count: Int, onAddItem: () -> Unit) {
+fun RKMartHeader(count: Int) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text("RKMart")
+        Text("Cart : $count")
+    }
+}
+
+@Composable
+fun CartCounter(count: Int) {
     Column {
         Text("Cart Counter")
         Text("Cart Item: $count")
-        Button(
-            onClick = onAddItem
-        ) {
-            Text("Add Item")
-        }
     }
 }
 
@@ -207,14 +243,3 @@ fun CartSummary(count: Int) {
     }
 }
 
-@Composable
-fun RKMartHeader(count: Int) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text("RKMart")
-        Text("Cart : $count")
-    }
-}
