@@ -172,7 +172,13 @@ fun HomeScreen() {
 
         item {
             CartSummary(
-                count = totalItems,
+                cartItems = cartItems
+            )
+        }
+
+        items(cartItems){cartItem->
+            CartItemRow(
+                cartItem = cartItem
             )
         }
     }
@@ -240,10 +246,17 @@ fun ProductCard(
 }
 
 @Composable
-fun CartSummary(count: Int) {
+fun CartSummary(cartItems: List<CartItem>) {
     Column {
         Text("Cart Summary")
-        Text("Items in Cart: $count")
+//        cartItems.forEach { cartItem -> CartItemRow(cartItem) }
     }
 }
 
+@Composable
+fun CartItemRow(cartItem: CartItem){
+    Column() {
+        Text(cartItem.product.name)
+        Text("Quantity: ${cartItem.quantity}")
+    }
+}
