@@ -68,6 +68,8 @@ fun HomeScreen() {
         mutableStateOf(listOf<CartItem>())
     }
 
+    val totalItems = cartItems.sumOf { items-> items.quantity }
+
     // Temporary Database
     val products = listOf(
         Product(
@@ -102,7 +104,7 @@ fun HomeScreen() {
             .padding(16.dp)
     ) {
         item {
-            RKMartHeader(cartItems.size)
+            RKMartHeader(totalItems)
         }
         item {
             Row(
@@ -123,7 +125,7 @@ fun HomeScreen() {
 
         item {
             CartCounter(
-                count = cartItems.size
+                count = totalItems
             )
         }
 
@@ -138,7 +140,9 @@ fun HomeScreen() {
                     .padding(top = 16.dp, bottom = 16.dp)
                     .fillMaxWidth(),
                 onAddItem = {
-                    val existingItem = cartItems.find { it.product == product }
+                    val existingItem = cartItems.find {
+                        it.product == product
+                    }
 
                     if (existingItem != null) {
                         // Product already exist in the cart
@@ -168,7 +172,7 @@ fun HomeScreen() {
 
         item {
             CartSummary(
-                count = cartItems.size,
+                count = totalItems,
             )
         }
     }
